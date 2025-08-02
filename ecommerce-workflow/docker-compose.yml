@@ -1,0 +1,137 @@
+services:
+  # E-commerce API service
+  ecommerce-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_PATH=/app/data/ecommerce.db
+      - "UPSELL_ENABLED=true"
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=mistral
+      - LOG_LEVEL=info
+      - SUMMER10_ENABLED=true
+      - VAT_RATE=0.20
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ecommerce_data:/app/data
+      - ecommerce_logs:/app/logs
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - ecommerce_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Ollama AI service for upselling
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ecommerce_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Initialize Ollama with required model
+  ollama-init:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - ecommerce_network
+    volumes:
+      - ollama_data:/root/.ollama
+    command: >
+      sh -c "
+        echo 'Waiting for Ollama to be ready...' &&
+        sleep 10 &&
+        echo 'Checking if mistral model exists...' &&
+        if ! ollama list | grep -q mistral; then
+          echo 'Pulling mistral model...' &&
+          ollama pull mistral &&
+          echo 'Mistral model ready!'
+        else
+          echo 'Mistral model already exists'
+        fi
+      "
+    restart: "no"
+
+  # Frontend (disabled due to missing nginx.conf)
+  # frontend:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "3001:80"
+  #   volumes:
+  #     - ./public:/usr/share/nginx/html:ro
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - ecommerce-api
+  #   networks:
+  #     - ecommerce_network
+  #   restart: unless-stopped
+
+  # Development service (alternative to production)
+  ecommerce-dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_PATH=/app/data/ecommerce.db
+      - "UPSELL_ENABLED=true"
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=mistral
+      - LOG_LEVEL=debug
+      - SUMMER10_ENABLED=true
+      - VAT_RATE=0.20
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ecommerce_data:/app/data
+      - ecommerce_logs:/app/logs
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - ecommerce_network
+    profiles:
+      - dev
+
+volumes:
+  ecommerce_data:
+    driver: local
+  ecommerce_logs:
+    driver: local
+  ollama_data:
+    driver: local
+
+networks:
+  ecommerce_network:
+    driver: bridge
+
+# Development override
+# Use: docker-compose --profile dev up
+# This will start the development version with hot reload

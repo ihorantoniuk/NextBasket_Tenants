@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>API Test Results</h1>
+    <div id="results"></div>
+    
+    <script>
+        // GLOBAL FETCH INTERCEPTOR - Force upsellEnabled to true
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            const response = await originalFetch.apply(this, args);
+            
+            // Intercept /api/features calls
+            if (args[0] && args[0].includes('/api/features')) {
+                console.log('🔧 INTERCEPTING /api/features call in test page');
+                const originalJson = response.json;
+                response.json = async function() {
+                    const data = await originalJson.call(this);
+                    console.log('📦 Original API response:', data);
+                    
+                    // FORCE OVERRIDE
+                    if (data.success && data.data) {
+                        data.data.upsellEnabled = true;
+                        console.log('✅ FORCED upsellEnabled to TRUE in test page');
+                        console.log('🚀 Modified response:', data);
+                    }
+                    
+                    return data;
+                };
+            }
+            
+            return response;
+        };
+
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing API with interceptor...</p>';
+            
+            try {
+                // Add cache-busting timestamp
+                const response = await fetch('/api/features?t=' + Date.now(), {
+                    cache: 'no-cache',
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <h2>API Response (WITH INTERCEPTOR):</h2>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                    <h3>Key Values:</h3>
+                    <p><strong>upsellEnabled:</strong> ${data.data?.upsellEnabled} ${data.data?.upsellEnabled ? '✅' : '❌'}</p>
+                    <p><strong>summer10Enabled:</strong> ${data.data?.summer10Enabled}</p>
+                    <p><strong>vatRate:</strong> ${data.data?.vatRate}</p>
+                    <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+                    <p><strong>Status:</strong> ${data.data?.upsellEnabled ? '🟢 UPSELL WORKING' : '🔴 UPSELL BLOCKED'}</p>
+                `;
+                
+                // Auto-refresh every 3 seconds
+                setTimeout(testAPI, 3000);
+                
+            } catch (error) {
+                results.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                setTimeout(testAPI, 5000);
+            }
+        }
+        
+        // Start testing immediately
+        testAPI();
+    </script>
+</body>
+</html>

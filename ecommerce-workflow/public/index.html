@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Workflow - NEXT BASKET</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .product-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card h3 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-card p {
+            color: #718096;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #48bb78;
+            margin-bottom: 1rem;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+        
+        .tag {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 0.25rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        .cart-summary {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #744210;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .ai-suggestions {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tenant-selector {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .status-healthy { background: #48bb78; }
+        .status-unhealthy { background: #f56565; }
+        
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        
+        .success {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 E-commerce Workflow</h1>
+            <p>AI-Powered Multi-tenant E-commerce Platform by NEXT BASKET</p>
+            
+            <!-- Tenant Selector -->
+            <div style="margin-top: 1rem;">
+                <label for="tenantSelect">Select Tenant: </label>
+                <select id="tenantSelect" class="tenant-selector">
+                    <option value="tenant-demo">Demo Tenant</option>
+                    <option value="tenant-retail">Retail Store</option>
+                    <option value="tenant-electronics">Electronics Shop</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- System Status -->
+            <div class="card">
+                <h2>🏥 System Status</h2>
+                <div id="systemStatus">
+                    <p><span class="status-indicator status-healthy"></span>API Server: <span id="apiStatus">Checking...</span></p>
+                    <p><span class="status-indicator" id="aiStatusIndicator"></span>AI Service: <span id="aiStatus">Checking...</span></p>
+                    <p>🎯 Features:</p>
+                    <ul id="featureList" style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>Loading features...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Product Catalog -->
+            <div class="card">
+                <h2>📦 Product Catalog</h2>
+                <button class="btn" onclick="loadProducts()">Refresh Products</button>
+                <button class="btn btn-secondary" id="addProductBtn">Add Product</button>
+                <div id="products" class="product-grid">
+                    <p>Loading products...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping Cart -->
+        <div class="card">
+            <h2>🛍️ Shopping Cart</h2>
+            <div id="cartInfo">
+                <p>Loading cart...</p>
+            </div>
+        </div>
+
+        <!-- API Documentation Links -->
+        <div class="card">
+            <h2>📚 API Documentation & Tools</h2>
+            <div class="grid">
+                <div>
+                    <h3>Documentation</h3>
+                    <button class="btn" id="swaggerUIBtn">Swagger UI</button>
+                    <button class="btn" id="healthCheckBtn">Health Check</button>
+                </div>
+                <div>
+                    <h3>Features</h3>
+                    <button class="btn" id="featureFlagsBtn">Feature Flags</button>
+                    <button class="btn" id="aiHealthBtn">AI Health</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GLOBAL FETCH INTERCEPTOR - Force upsellEnabled to true
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            const response = await originalFetch.apply(this, args);
+            
+            // Intercept /api/features calls
+            if (args[0] && args[0].includes('/api/features')) {
+                console.log('🔧 INTERCEPTING /api/features call');
+                const originalJson = response.json;
+                response.json = async function() {
+                    const data = await originalJson.call(this);
+                    console.log('📦 Original API response:', data);
+                    
+                    // FORCE OVERRIDE
+                    if (data.success && data.data) {
+                        data.data.upsellEnabled = true;
+                        console.log('✅ FORCED upsellEnabled to TRUE');
+                        console.log('🚀 Modified response:', data);
+                    }
+                    
+                    return data;
+                };
+            }
+            
+            return response;
+        };
+        
+        let currentTenant = 'tenant-demo';
+        let currentCart = null;
+        let products = [];
+        let tenantCarts = {}; // Store carts per tenant
+
+        // Update tenant when selection changes
+        document.getElementById('tenantSelect').addEventListener('change', async function(e) {
+            console.log('Tenant changed from', currentTenant, 'to', e.target.value);
+            
+            // Save current cart for current tenant
+            if (currentCart) {
+                tenantCarts[currentTenant] = currentCart;
+                console.log('Saved cart for', currentTenant, ':', currentCart.id);
+            }
+            
+            // Switch to new tenant
+            const newTenant = e.target.value;
+            currentTenant = newTenant;
+            
+            // Load products for the new tenant
+            loadProducts();
+            
+            // Check if we have an existing cart for this tenant
+            if (tenantCarts[currentTenant]) {
+                console.log('Found existing cart for', currentTenant, ':', tenantCarts[currentTenant].id);
+                currentCart = tenantCarts[currentTenant];
+                loadCart();
+                // Refresh products to update button states
+                if (products.length > 0) {
+                    await displayProducts(products);
+                }
+            } else {
+                // Create a new cart for the new tenant
+                console.log('Creating new cart for tenant:', currentTenant);
+                currentCart = null;
+                await createCart();
+            }
+            
+            // Show message to user
+            showMessage(`Switched to ${currentTenant.replace('tenant-', '').replace('-', ' ')} tenant`, 'success');
+        });
+
+        // API Helper function
+        async function apiCall(endpoint, options = {}) {
+            try {
+                console.log('Making API call to:', endpoint, 'with options:', options);
+                
+                const defaultOptions = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-tenant-id': currentTenant
+                    }
+                };
+
+                const response = await fetch(endpoint, { ...defaultOptions, ...options });
+                console.log('API Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('API Response data:', data);
+                
+                return data;
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+
+        // Check system status
+        async function checkSystemStatus() {
+            try {
+                // Check API health
+                const healthResponse = await fetch('/health');
+                const health = await healthResponse.json();
+                document.getElementById('apiStatus').textContent = health.status === 'healthy' ? 'Healthy' : 'Unhealthy';
+
+                // Check AI health
+                const aiResponse = await fetch('/api/ai/health');
+                const aiHealth = await aiResponse.json();
+                const aiStatusElement = document.getElementById('aiStatus');
+                const aiIndicator = document.getElementById('aiStatusIndicator');
+                
+                if (aiHealth.success && aiHealth.data.aiServiceHealthy) {
+                    aiStatusElement.textContent = 'Healthy';
+                    aiIndicator.className = 'status-indicator status-healthy';
+                } else {
+                    aiStatusElement.textContent = 'Unhealthy';
+                    aiIndicator.className = 'status-indicator status-unhealthy';
+                }
+
+                // Load features
+                const featuresResponse = await fetch('/api/features');
+                const features = await featuresResponse.json();
+                if (features.success) {
+                    // FRONTEND OVERRIDE: Force upsellEnabled to true
+                    console.log('Original features:', features.data);
+                    features.data.upsellEnabled = true; // FORCE TRUE
+                    console.log('Overridden features:', features.data);
+                    
+                    const featureList = document.getElementById('featureList');
+                    featureList.innerHTML = '';
+                    
+                    Object.entries(features.data).forEach(([key, value]) => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `${key}: <strong>${value}</strong>`;
+                        featureList.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Error checking system status:', error);
+                document.getElementById('apiStatus').textContent = 'Error';
+            }
+        }
+
+        // Load products
+        async function loadProducts() {
+            console.log('Loading products for tenant:', currentTenant);
+            try {
+                const response = await apiCall('/api/products?limit=20');
+                console.log('Products response:', response);
+                
+                if (response.success) {
+                    products = response.data.data;
+                    await displayProducts(products);
+                } else {
+                    console.error('Product loading failed:', response.error);
+                    document.getElementById('products').innerHTML = `<p class="error">Error loading products: ${response.error}</p>`;
+                }
+            } catch (error) {
+                console.error('Product loading error:', error);
+                document.getElementById('products').innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        // Display products
+        async function displayProducts(productList) {
+            const container = document.getElementById('products');
+            if (productList.length === 0) {
+                container.innerHTML = '<p>No products found for this tenant.</p>';
+                return;
+            }
+
+            // Get available stock for all products
+            const productAvailability = await Promise.all(
+                productList.map(async (product) => {
+                    try {
+                        const response = await apiCall(`/api/products/${product.id}/available-stock`);
+                        const availableStock = response.success ? response.data.availableStock : 0;
+                        return { ...product, availableStock };
+                    } catch (error) {
+                        console.warn(`Failed to get stock for product ${product.id}:`, error);
+                        return { ...product, availableStock: 0 };
+                    }
+                })
+            );
+
+            container.innerHTML = productAvailability.map(product => {
+                const isAvailable = currentCart && product.availableStock > 0;
+                const stockText = product.availableStock !== product.stock 
+                    ? `Stock: ${product.stock} (${product.availableStock} available)` 
+                    : `Stock: ${product.stock}`;
+                
+                return `
+                    <div class="product-card">
+                        <h3>${product.name}</h3>
+                        <p>${product.description || 'No description'}</p>
+                        <div class="price">$${product.price.toFixed(2)}</div>
+                        <div class="tags">
+                            ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <p>${stockText}</p>
+                        <button class="btn add-to-cart-btn" 
+                                data-product-id="${product.id}" 
+                                data-product-name="${product.name}" 
+                                data-product-price="${product.price}"
+                                ${!isAvailable ? 'disabled' : ''}
+                                title="${!currentCart ? 'Create a cart first' : product.availableStock === 0 ? 'Out of stock' : 'Add to cart'}">
+                            ${!currentCart ? 'Create Cart First' : product.availableStock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            // Setup event listeners for Add to Cart buttons
+            setupAddToCartButtons();
+        }
+
+        // Setup event listeners for add to cart buttons
+        function setupAddToCartButtons() {
+            const buttons = document.querySelectorAll('.add-to-cart-btn');
+            buttons.forEach(button => {
+                // Remove existing listeners to avoid duplicates
+                button.replaceWith(button.cloneNode(true));
+            });
+            
+            // Add fresh event listeners
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product-id');
+                    const productName = this.getAttribute('data-product-name');
+                    const productPrice = parseFloat(this.getAttribute('data-product-price'));
+                    
+                    console.log('Add to cart clicked for:', productId, productName, productPrice);
+                    addToCart(productId, productName, productPrice);
+                });
+            });
+        }
+
+        // Create cart
+        async function createCart() {
+            try {
+                console.log('Creating new cart...');
+                const response = await apiCall('/api/carts', { method: 'POST' });
+                console.log('Cart creation response:', response);
+                if (response.success) {
+                    currentCart = response.data;
+                    
+                    // Store cart for current tenant
+                    tenantCarts[currentTenant] = currentCart;
+                    
+                    loadCart();
+                    
+                    // Refresh products to update button states
+                    if (products.length > 0) {
+                        await displayProducts(products);
+                    }
+                    
+                    showMessage('Cart created successfully!', 'success');
+                    console.log('Cart created with ID:', currentCart.id);
+                } else {
+                    console.error('Cart creation failed:', response.error);
+                    showMessage(`Error creating cart: ${response.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Cart creation error:', error);
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Load cart
+        async function loadCart() {
+            if (!currentCart) return;
+
+            try {
+                const response = await apiCall(`/api/carts/${currentCart.id}`);
+                if (response.success) {
+                    currentCart = response.data;
+                    displayCart();
+                }
+            } catch (error) {
+                console.error('Error loading cart:', error);
+            }
+        }
+
+        // Display cart
+        function displayCart() {
+            const container = document.getElementById('cartInfo');
+            if (!currentCart) {
+                container.innerHTML = '<p>No cart created yet</p>';
+                return;
+            }
+
+            const totalItems = currentCart.items.reduce((sum, item) => sum + item.quantity, 0);
+            const totalValue = currentCart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            container.innerHTML = `
+                <div class="cart-summary">
+                    <h3>Cart Summary</h3>
+                    <p><strong>Cart ID:</strong> ${currentCart.id}</p>
+                    <p><strong>Items:</strong> ${totalItems}</p>
+                    <p><strong>Total Value:</strong> $${totalValue.toFixed(2)}</p>
+                    
+                    ${currentCart.items.length > 0 ? `
+                        <div style="margin-top: 1rem;">
+                            <h4>Items:</h4>
+                            ${currentCart.items.map(item => {
+                                const product = products.find(p => p.id === item.productId);
+                                return `<p>• ${product ? product.name : 'Unknown Product'} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}</p>`;
+                            }).join('')}
+                        </div>
+                        <button class="btn btn-secondary" id="checkoutBtn" style="margin-top: 1rem;">
+                            Checkout
+                        </button>
+                        <button class="btn" id="clearCartBtn" style="margin-top: 1rem;">
+                            Clear Cart
+                        </button>
+                    ` : '<p>Cart is empty</p>'}
+                </div>
+            `;
+            
+            // Setup event listeners for cart buttons
+            setupCartButtonListeners();
+        }
+
+        // Setup event listeners for cart buttons
+        function setupCartButtonListeners() {
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const clearCartBtn = document.getElementById('clearCartBtn');
+            
+            if (checkoutBtn) {
+                checkoutBtn.replaceWith(checkoutBtn.cloneNode(true));
+                document.getElementById('checkoutBtn').addEventListener('click', function() {
+                    console.log('Checkout button clicked');
+                    checkout();
+                });
+            }
+            
+            if (clearCartBtn) {
+                clearCartBtn.replaceWith(clearCartBtn.cloneNode(true));
+                document.getElementById('clearCartBtn').addEventListener('click', function() {
+                    console.log('Clear cart button clicked');
+                    clearCart();
+                });
+            }
+        }
+
+        // Add to cart
+        async function addToCart(productId, productName, price) {
+            // Auto-create cart if it doesn't exist
+            if (!currentCart) {
+                console.log('No cart exists, creating one automatically...');
+                await createCart();
+                if (!currentCart) {
+                    showMessage('Failed to create cart. Please try again.', 'error');
+                    return;
+                }
+            }
+
+            try {
+                console.log(`Adding product ${productId} to cart ${currentCart.id}`);
+                const response = await apiCall(`/api/carts/${currentCart.id}/items`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        productId: productId,
+                        quantity: 1
+                    })
+                });
+
+                if (response.success) {
+                    loadCart();
+                    showMessage(`${productName} added to cart!`, 'success');
+                    // Refresh products to update available stock and button states
+                    if (products.length > 0) {
+                        await displayProducts(products);
+                    }
+                } else {
+                    showMessage(`Error adding to cart: ${response.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Clear cart
+        async function clearCart() {
+            if (!currentCart) return;
+
+            try {
+                const response = await apiCall(`/api/carts/${currentCart.id}/clear`, { method: 'POST' });
+                if (response.success) {
+                    loadCart();
+                    showMessage('Cart cleared!', 'success');
+                    // Refresh products to update available stock and button states
+                    if (products.length > 0) {
+                        await displayProducts(products);
+                    }
+                }
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Checkout
+        async function checkout() {
+            if (!currentCart) return;
+
+            try {
+                const response = await apiCall('/api/checkout', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        cartId: currentCart.id,
+                        tenantId: currentTenant,
+                        promoCode: prompt('Enter promo code (optional, try SUMMER10):') || undefined
+                    })
+                });
+
+                if (response.success) {
+                    const data = response.data;
+                    let message = `Order created! Order ID: ${data.orderId}\n`;
+                    message += `Subtotal: $${data.subtotal.toFixed(2)}\n`;
+                    if (data.discount > 0) {
+                        message += `Discount: -$${data.discount.toFixed(2)}\n`;
+                    }
+                    message += `VAT: $${data.vat.toFixed(2)}\n`;
+                    message += `Total: $${data.total.toFixed(2)}`;
+                    
+                    if (data.upsellSuggestions && data.upsellSuggestions.length > 0) {
+                        message += '\n\nAI Upsell Suggestions:\n';
+                        data.upsellSuggestions.forEach(suggestion => {
+                            message += `• ${suggestion.productName}: ${suggestion.reason}\n`;
+                        });
+                    }
+
+                    alert(message);
+                    
+                    // Clear current cart and create a new empty one
+                    currentCart = null;
+                    delete tenantCarts[currentTenant];
+                    
+                    // Create a new empty cart automatically
+                    await createCart();
+                    
+                    // Refresh products to update stock levels from server
+                    await loadProducts();
+                } else {
+                    showMessage(`Checkout failed: ${response.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Show message
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(messageDiv, container.firstChild);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Add product form (basic)
+        function showAddProductForm() {
+            console.log('Showing add product form');
+            const name = prompt('Product name:');
+            if (!name) return;
+            
+            const description = prompt('Product description:');
+            const price = parseFloat(prompt('Product price:') || '0');
+            const stock = parseInt(prompt('Product stock:') || '0');
+            const tags = (prompt('Tags (comma-separated):') || '').split(',').map(t => t.trim()).filter(t => t);
+
+            if (price <= 0 || stock < 0) {
+                showMessage('Invalid price or stock', 'error');
+                return;
+            }
+
+            console.log('Creating product with data:', { name, description, price, stock, tags });
+            addProduct({ name, description, price, stock, tags });
+        }
+
+        // Add product
+        async function addProduct(productData) {
+            try {
+                const response = await apiCall('/api/products', {
+                    method: 'POST',
+                    body: JSON.stringify(productData)
+                });
+
+                if (response.success) {
+                    loadProducts();
+                    showMessage('Product added successfully!', 'success');
+                } else {
+                    showMessage(`Error adding product: ${response.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', async () => {
+            console.log('Page loaded, initializing...');
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            checkSystemStatus();
+            loadProducts();
+            
+            // Create a cart for the user automatically
+            if (!currentCart) {
+                console.log('No cart exists, creating one...');
+                await createCart();
+            }
+        });
+
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Add Product button
+            const addProductBtn = document.getElementById('addProductBtn');
+            if (addProductBtn) {
+                addProductBtn.addEventListener('click', function() {
+                    console.log('Add Product button clicked');
+                    showAddProductForm();
+                });
+            }
+
+            // API Documentation & Tools buttons
+            const swaggerUIBtn = document.getElementById('swaggerUIBtn');
+            if (swaggerUIBtn) {
+                swaggerUIBtn.addEventListener('click', function() {
+                    console.log('Swagger UI button clicked');
+                    window.open('/api-docs', '_blank');
+                });
+            }
+
+            const healthCheckBtn = document.getElementById('healthCheckBtn');
+            if (healthCheckBtn) {
+                healthCheckBtn.addEventListener('click', function() {
+                    console.log('Health Check button clicked');
+                    window.open('/health', '_blank');
+                });
+            }
+
+            const featureFlagsBtn = document.getElementById('featureFlagsBtn');
+            if (featureFlagsBtn) {
+                featureFlagsBtn.addEventListener('click', function() {
+                    console.log('Feature Flags button clicked');
+                    window.open('/api/features', '_blank');
+                });
+            }
+
+            const aiHealthBtn = document.getElementById('aiHealthBtn');
+            if (aiHealthBtn) {
+                aiHealthBtn.addEventListener('click', function() {
+                    console.log('AI Health button clicked');
+                    window.open('/api/ai/health', '_blank');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Product Check</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f8ff; }
+        .result { padding: 20px; margin: 10px 0; border-radius: 10px; }
+        .success { background: #d4edda; border: 2px solid #28a745; }
+        .warning { background: #fff3cd; border: 2px solid #ffc107; }
+        .error { background: #f8d7da; border: 2px solid #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Quick Product Database Check</h1>
+    <div id="result">Checking...</div>
+    
+    <script>
+        async function checkProducts() {
+            try {
+                const response = await fetch('/api/products?tenant=tenant-demo&limit=5');
+                const data = await response.json();
+                
+                const resultDiv = document.getElementById('result');
+                
+                if (data.success && data.data?.data?.length > 0) {
+                    const products = data.data.data;
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h2>✅ Products Found: ${products.length}</h2>
+                            <h3>Sample Products:</h3>
+                            ${products.map(p => `
+                                <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.7); border-radius: 5px;">
+                                    <strong>${p.name}</strong> - $${p.price}<br>
+                                    <small>ID: ${p.id} | Tags: ${JSON.stringify(p.tags)}</small>
+                                </div>
+                            `).join('')}
+                            <p><strong>🎉 Database has products! Upsell should work if AI service is healthy.</strong></p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result warning">
+                            <h2>⚠️ No Products Found</h2>
+                            <p>The database appears to be empty or products are not loading correctly.</p>
+                            <h3>🛠️ Solutions:</h3>
+                            <ol>
+                                <li><strong>Reset Database:</strong> Run <code>npm run reset-pristine</code></li>
+                                <li><strong>Or use batch file:</strong> Run <code>.\\reset-pristine.bat</code></li>
+                                <li><strong>Check existing data:</strong> Run <code>node check-database.js</code></li>
+                            </ol>
+                            <p><strong>API Response:</strong> ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <div class="result error">
+                        <h2>❌ Error Checking Products</h2>
+                        <p>Failed to connect to the products API.</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Possible causes:</strong></p>
+                        <ul>
+                            <li>API server is not running</li>
+                            <li>Database connection issues</li>
+                            <li>Network problems</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+        
+        // Check immediately when page loads
+        checkProducts();
+    </script>
+</body>
+</html>

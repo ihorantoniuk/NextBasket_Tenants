@@ -1,0 +1,128 @@
+<role>
+  You are an expert of Software Architecture,Senior Full-Stack Developer with experience in DevOps, cloud technologies, and building end-to-end systems. contributing to the NEXT BASKET platform, 
+who strive to understand the business context behind every task and contribute with ideas and expertise to build the future of our products.
+
+</role>
+<task>
+3.4. Task 4: AI-Powered Checkout and Upsell
+Problem
+Build a tenant-aware e-commerce mini-workflow that:
+1. Offers catalogue, cart, and checkout APIs.
+2. Calls a Large Language Model (LLM) at checkout to suggest up-sell items.
+3. Persists completed orders.
+4. Runs both locally via Docker Compose and is deployable to a free-tier cloud provider.
+What to Build:
+Component Core Responsibilities Minimum Scope
+Catalog API List products, prices, and stock per tenant.
+
+Read from an in-memory list or a JSON file; 
+provide endpoints to list all products and fetch one by ID.
+
+Cart and Checkout API:
+
+Create/update a cart; on checkout,
+reserve stock and create an order.
+
+Implement REST routes for cart
+creation/update and a checkout
+route that validates stock.
+
+AI Upsell Service:
+
+When UPSELL_ENABLED is true, request <=3 complementary products for the current cart and add their explanations.
+
+Decouple into its own module; may call OpenAI or a local model; must log the prompt and the response.
+
+Order Store: 
+Persist final orders. Use an in-memory map or an SQLite file.
+
+Public Storefront (SPA)      
+A one-page UI: product list, "Add to cart" button, Checkout button, upsell display, and order confirmation.
+
+Can be implemented with plain React, HTMX, or vanilla JS.
+
+Extra credit: Implement a feature flag UPSELL_ENABLED and a promo code SUMMER10 for a 10% discount.
+
+Requirements
+Area Concrete Expectations
+E-commerce
+logic
+
+Stock must be checked atomically on checkout. The final price calculation
+should be: subtotal, then apply the 10% promo discount (if present), then add 20% VAT.
+
+Tenant
+isolation
+
+All resources (products, carts, orders) must be scoped by tenant_id. Any
+cross-tenant access attempt must fail with an error.
+
+AI integration
+
+The upsell logic must be isolated in its own file/module. The checkout
+process must succeed even if the LLM call fails or is disabled via the feature
+flag.
+
+Quality gates
+
+The project must be configured with a linter and a code formatter. It must
+include at least 5 unit tests and 1 integration test. A GitHub Actions
+workflow running the tests on push is required.
+
+Docs
+
+Provide a short OpenAPI (Swagger) or Postman specification for the APIs.
+Include 2-4 diagrams (e.g., context, sequence) explaining the architecture.
+The README.md must contain clear local and cloud run instructions.
+
+Deployability
+
+The command docker-compose up must work locally. Provide a live URL of
+the application deployed on a free-tier cloud service (e.g., Heroku, Vercel,
+Render).
+Success Criteria
+
+1. The checkout process correctly reserves stock, applies the discount and VAT, and
+stores the final order.
+2. When enabled, the upsell service returns relevant product suggestions with
+explanations.
+3. Toggling the UPSELL_ENABLED feature flag works without requiring code changes or
+a restart.
+4. All CI tests pass; the code and documentation are clean and idiomatic; both local
+(Docker) and cloud deployments are functional and accessible.
+</task>
+
+<criteria>
+1. Problem-Solving Approach: 
+o How do you analyze the task requirements?
+o How do you plan and structure your solution before you start writing the
+main code?
+o What technical trade-offs do you make during development, and what is the
+logic behind them?
+2. Architecture and Code Quality:
+o Modularity, cleanliness, and clear structure of the code.
+o Adherence to best practices and conventions for your chosen language and
+framework.
+o Is your solution easy for another developer to understand and build upon?
+3. Efficiency and Resourcefulness in Using AI Assistants:
+o High score: You demonstrate skillful use of AI to accelerate routine tasks
+(generating boilerplate, tests, documentation), to explore alternative
+solutions, for refactoring, or for debugging. You show critical thinking towards
+AI suggestions by verifying, adapting, and improving them.
+o Low score: You simply copy large blocks of code without a clear
+understanding, rely on AI to do all the work for you, and struggle to proceed
+when the AI assistant provides an incorrect or incomplete answer.
+
+4. Adherence to Requirements and Success Criteria:
+
+o Does the solution meet all functional and non-functional requirements
+described in the task (e.g., tenant isolation, real-time updates, security rules,
+RBAC)?
+5. Testing and Quality:
+o Presence, adequacy, and coverage of automated tests (unit, integration),
+where applicable and required by the task.
+6. Completeness of the Submitted Material:
+o Quality and clarity of the README.md file.
+o Ease of running and testing the project.
+o Accessibility and correctness of the provided links to the repository
+</criteria>

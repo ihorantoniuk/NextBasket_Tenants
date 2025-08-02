@@ -1,0 +1,108 @@
+I need you to help me with this task (see file attached).
+
+Feel free to propose or ask questions.
+
+Technical stack requirements are:
+
+• Node.js + TypeScript
+
+• Express.js
+
+• SQLite
+
+• Jest or equivalent test framework
+
+• Create a REST API with full CRUD for Product (ID, name, description,
+
+tags, price).
+
+• Expose API documentation using Swagger/OpenAPI.
+
+• Implement validation, error handling, and basic logging.
+
+• Include: docker-compose.yml, tests, and README.md
+
+Use Ollama + mistral as our model for up/cross selling.
+
+Especially create effective project structure, Unit tests and architecture. All business requirements as described the attached file.  Query_GitHub.txt
+
+I would propose this structure (for ecommerce-workflow project):
+ecommerce-workflow/
++-- src/
+¦   +-- app.ts                  # Main Express/Fastify application setup
+¦   +-- config/                 # Configuration files (environment variables, etc.)
+¦   ¦   +-- index.ts
+¦   +-- database/               # Database setup and migrations
+¦   ¦   +-- index.ts
+¦   ¦   +-- migrations/
+¦   +-- models/                 # Database models (e.g., Product, Cart, Order, OrderItem)
+¦   ¦   +-- product.model.ts
+¦   ¦   +-- cart.model.ts
+¦   ¦   +-- order.model.ts
+¦   +-- routes/                 # API routes definitions
+¦   ¦   +-- product.routes.ts
+¦   ¦   +-- cart.routes.ts
+¦   ¦   +-- checkout.routes.ts
+¦   +-- controllers/            # Request handlers / Business logic orchestration
+¦   ¦   +-- product.controller.ts
+¦   ¦   +-- cart.controller.ts
+¦   ¦   +-- checkout.controller.ts
+¦   +-- services/               # Business logic / Core domain services
+¦   ¦   +-- product.service.ts
+¦   ¦   +-- cart.service.ts
+¦   ¦   +-- checkout.service.ts
+¦   ¦   +-- upsell.service.ts   # Decoupled AI Upsell Service 
+¦   +-- repositories/           # Database interaction (data access layer)
+¦   ¦   +-- product.repository.ts
+¦   ¦   +-- cart.repository.ts
+¦   ¦   +-- order.repository.ts
+¦   +-- middleware/             # Express middleware (e.g., error handling, logging, validation)
+¦   ¦   +-- errorHandler.ts
+¦   ¦   +-- logger.ts
+¦   ¦   +-- validation.ts
+¦   +-- utils/                  # Utility functions
+¦   ¦   +-- apiDocs.ts          # Swagger/OpenAPI setup
+¦   +-- types/                  # TypeScript custom types/interfaces
+¦   ¦   +-- index.ts
+¦   +-- server.ts               # Entry point of the application
++-- tests/
+¦   +-- unit/                   # Unit tests for services, controllers, etc.
+¦   ¦   +-- product.service.test.ts
+¦   ¦   +-- upsell.service.test.ts
+¦   +-- integration/            # Integration tests for API endpoints
+¦   ¦   +-- product.integration.test.ts
+¦   ¦   +-- checkout.integration.test.ts
++-- .env.example
++-- Dockerfile
++-- docker-compose.yml
++-- package.json
++-- tsconfig.json
++-- README.md                   # Project documentation [cite: 36]       
+
+With this Architecture:
++---------------------+      +---------------------+      +---------------------+
+|                     |      |                     |      |                     |
+| Public Storefront   |      |     API Gateway     |      |   AI Upsell Service |
+| (SPA)               | <--->|  (e.g., Express.js) | <--->|  (Node.js/TS)       |
+|                     |      |                     |      |                     |
++---------------------+      +----------^----------+      +----------^----------+
+                                        |                        |
+                                        | (HTTP/Internal Calls)  | (HTTP/LLM API)
+                                        |                        |
+                          +-------------+--------------+   +-----+---------------+
+                          |                            |   |                     |
+                          |   Core E-commerce Services |   |  External LLM (e.g.,|
+                          |                            |   |  OpenAI)            |
+                          |  (Catalog, Cart, Checkout) |   |                     |
+                          |                            |   +---------------------+
+                          +-------------+--------------+
+                                        |
+                                        | (Database Connection)
+                                        |
+                          +-------------v--------------+
+                          |                            |
+                          |        Order Store         |
+                          |      (SQLite/Postgres)     |
+                          |                            |
+                          +----------------------------+
+But feel free to change or propose a more efficient one.

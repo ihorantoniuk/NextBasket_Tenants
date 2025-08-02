@@ -1,0 +1,70 @@
+{"level":"info","message":"🧹 Starting database reset to pristine state...","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"Connected to SQLite database at ./data/ecommerce.db","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"Database tables initialized successfully","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"Seeding sample data...","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"Seeded 7 sample products","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🗑️  Clearing existing products...","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🛒 Clearing existing carts...","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"📦 Clearing existing cart items...","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✅ Database cleared successfully","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🌱 Inserting pristine product catalog...","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: iPhone 15 Pro ($999.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: iPhone Case - Clear ($29.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: Screen Protector - Tempered Glass ($19.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: USB-C to Lightning Cable ($39.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: MagSafe Wireless Charger ($59.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: MacBook Air M3 ($1299.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: Laptop Sleeve - 13 inch ($49.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: USB-C Hub - 7-in-1 ($79.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: AirPods Pro 2 ($249.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"✓ Added: AirPods Case - Silicone ($14.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🎉 Database reset complete!","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"📊 Total products: 10","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🔬 Perfect for testing AI upsell suggestions!","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🏷️  Available categories: smartphone, electronics, apple, premium, accessories, protection, iphone, case, screen, glass, charging, cable, usb-c, wireless, magsafe, laptop, computer, leather, connectivity, hub, audio, noise-canceling, airpods, silicone","service":"ecommerce-workflow","timestamp":"2025-08-01 12:41:59"}
+{"level":"info","message":"🧹 Starting database reset to pristine state...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"Connected to SQLite database at ./data/ecommerce.db","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"Database tables initialized successfully","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"Sample data already exists, skipping seed","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🗑️  Clearing existing products...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🛒 Clearing existing carts...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"📦 Clearing existing cart items...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✅ Database cleared successfully","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🌱 Inserting pristine product catalog...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: iPhone 15 Pro ($999.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: iPhone Case - Clear ($29.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: Screen Protector - Tempered Glass ($19.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: USB-C to Lightning Cable ($39.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: MagSafe Wireless Charger ($59.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: MacBook Air M3 ($1299.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: Laptop Sleeve - 13 inch ($49.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: USB-C Hub - 7-in-1 ($79.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: AirPods Pro 2 ($249.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"✓ Added: AirPods Case - Silicone ($14.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🎉 Database reset complete!","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"📊 Total products: 10","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🔬 Perfect for testing AI upsell suggestions!","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🏷️  Available categories: smartphone, electronics, apple, premium, accessories, protection, iphone, case, screen, glass, charging, cable, usb-c, wireless, magsafe, laptop, computer, leather, connectivity, hub, audio, noise-canceling, airpods, silicone","service":"ecommerce-workflow","timestamp":"2025-08-01 13:03:07"}
+{"level":"info","message":"🧹 Starting database reset to pristine state...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"Connected to SQLite database at ./data/ecommerce.db","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"Database tables initialized successfully","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"Sample data already exists, skipping seed","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"🗑️  Clearing existing products...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"🛒 Clearing existing carts...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"📦 Clearing existing cart items...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✅ Database cleared successfully","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"🌱 Inserting pristine product catalog...","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: iPhone 15 Pro ($999.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: iPhone Case - Clear ($29.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: Screen Protector - Tempered Glass ($19.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: USB-C to Lightning Cable ($39.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: MagSafe Wireless Charger ($59.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: MacBook Air M3 ($1299.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: Laptop Sleeve - 13 inch ($49.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: USB-C Hub - 7-in-1 ($79.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: AirPods Pro 2 ($249.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"✓ Added: AirPods Case - Silicone ($14.99)","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"🎉 Database reset complete!","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"📊 Total products: 10","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"🔬 Perfect for testing AI upsell suggestions!","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
+{"level":"info","message":"🏷️  Available categories: smartphone, electronics, apple, premium, accessories, protection, iphone, case, screen, glass, charging, cable, usb-c, wireless, magsafe, laptop, computer, leather, connectivity, hub, audio, noise-canceling, airpods, silicone","service":"ecommerce-workflow","timestamp":"2025-08-01 13:05:05"}
